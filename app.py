@@ -11,7 +11,7 @@ def SimilarWordRatio(userWord):
             if userInput == 'y':
                 return ''.join(data[wordInDictionary])
             else:
-                return "The Word is not in dictionary, please try again!"
+                return "The Word %s is not in dictionary, please try again!" % userWord
 
 
 def GetDefinition(userWord):

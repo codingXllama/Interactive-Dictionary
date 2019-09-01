@@ -11,9 +11,9 @@ def GetDefinition(userWord):
 
 
 keepRunning = True
-print("Type ex1t to quit the program")
+print("\n\t\t\t\t\t\t\t\tType ex1t to quit the program")
 while keepRunning:
-    userInput = input("Enter Word: ")
+    userInput = input("Enter Word: ").lower()
     if userInput != 'ex1t':
         print("Definition:", GetDefinition(userInput), "\n")
     else:

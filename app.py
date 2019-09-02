@@ -1,36 +1,49 @@
 import json
-from difflib import SequenceMatcher
-data = json.load(open("data.json"))
+from difflib import get_close_matches
+
+data = json.load(open('data.json'))
 
 
-def SimilarWordRatio(userWord):
-    for wordInDictionary in data:
-        if(SequenceMatcher(None, userWord, wordInDictionary).ratio() > 0.8):
-            userInput = input(
-                ("\nDid you mean? % s (Y or N): " % wordInDictionary))
-            if userInput == 'y':
-                return ''.join(data[wordInDictionary])
-            else:
-                return "The Word %s is not in dictionary, please try again!" % userWord
+def getMeaning(word):
 
-
-def GetDefinition(userWord):
-    if userWord in data:
-        return ''.join(data[userWord])
+    if word.lower() in data:
+        return data[word]
+    elif len(get_close_matches(word, data.keys())) > 0:
+        userPrompt = input("Did you mean %s instead? (Y | N): " %
+                           get_close_matches(word, data.keys())[0])
+        if userPrompt.lower() == 'y':
+            return data[get_close_matches(word, data.keys())[0]]
+        elif userPrompt.lower() == 'n':
+            return "The word does not exist"
+        else:
+            return "Invalid entry, please try again!"
     else:
-        # keepRunning = False
-        return SimilarWordRatio(userWord)
+        return "The word does not exist"
 
 
-keepRunning = True
+print("\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\tEnter ex1t to Quit the Program\n")
+while True:
 
-print("\n\n\t\t\t\t\t\t\t\tType ex1t to quit the program")
-while keepRunning:
-    userInput = input("Enter Word: ").lower()
-    if userInput != 'ex1t':
-        print("Definition:", GetDefinition(userInput), "\n")
+    # user prompt
+    print("__________________________\n")
+    userWord = input("Enter a word: ")
+    if userWord == 'ex1t':
+        break
     else:
-        print("\n<______________________>\n")
-        print("    Have a good day!")
-        print("<______________________>\n")
-        keepRunning = False
+        wordDefn = getMeaning(userWord)
+
+        # converting a list into a string
+        print("__________________________")
+        print("\nThe definition of %s:" % userWord, end='\n\n')
+        if type(wordDefn) == list:
+            # this means the word is a list and thus we will convert it into seperate strings
+            for sentence in wordDefn:
+                print(sentence)
+            # print('\n')
+            print("__________________________")
+
+        else:
+            print(wordDefn)
+
+
+print("Thanks for using the program ")
